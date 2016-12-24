@@ -12,20 +12,30 @@ public class Mensch extends Label{
 	Mensch vater = null; 																// Vater
 	Mensch mutter = null;														    // Mutter
 	Mensch partner = null; 															// Ehepartner
-	Boolean m; 																				// Männliche
-	Boolean w;																				// oder Weiblich
+	Boolean m = false; 																// Männliche
+	Boolean w = false;																	// oder Weiblich
 	String name;																			// Name
 	
 	
-	public Mensch(String name){
-		super();																		
-		this.name = name;																
+	public Mensch(String name, Boolean m){
+		super();	
+		this.name = name;	
+		this.m = m;
+		
+		//Wenn nicht m dann ist w true
+		if(!m){
+		w = true;
+		}
+		
+		this.setOnMouseClicked(e->Select());  							// Beim Klick auf das Objekt wird Select() ausgeführt
+		setPrefSize(50, 30);															// Setzt Größe (Breite,Höhe)
 		this.setText(name);															// Setzt den Labeltext auf den Namen
 		CSS(); 																					// Wendet CSS an
 	}
 
 	public void CSS(){
-		
+		setStyle("-fx-background-color: skyblue;"						// Hintergrund Farbe
+				+ "-fx-background-radius: 50;");								// Abgerundete Ecken ( höherer Wert umso runder)
 	}
 
 
@@ -96,7 +106,19 @@ public class Mensch extends Label{
 		
 	}
 	
+	/**
+	 * 
+	 * @return Liste der Kinder dieses Knoten
+	 */
 	public ArrayList<Mensch> getKinder(){
 		return kinder;
+	}
+	
+	public void Select(){
+		Main.secondSelected = Main.selected;
+		Main.selected = this;
+		System.out.println("DEBUG-Selected = " + Main.selected.name);
+		if(Main.secondSelected!=null)
+			System.out.println("DEBUG-SecondSelected = " + Main.secondSelected.name);
 	}
 }
