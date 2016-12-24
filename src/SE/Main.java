@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -22,6 +24,11 @@ public class Main extends Application {
 	Pane window;
 	static Mensch selected = null;
 	static Mensch secondSelected = null;
+	
+	//Menü
+	HBox hb = new HBox(10);
+	Button addRoot = new Button();
+	Button addChildren = new Button();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -31,11 +38,24 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Stammbaum");
 		window = new Pane();
-		window.setPrefSize(500, 500);
+		window.setPrefSize(1000, 800);
+		
+		//Menü
+		addRoot.setPrefSize(200, 50);
+		addRoot.setText("Add Root");
+		addRoot.setStyle("-fx-background-color: skyblue;"
+				+ "-fx-background-radius: 50");
+		addRoot.setOnAction(e->actionNewRoot());
+		addChildren.setPrefSize(200, 50);
+		addChildren.setText("Add Children");
+		addChildren.setStyle("-fx-background-color: skyblue;"
+				+ "-fx-background-radius: 50");
+		addChildren.setOnAction(e->actionNewChildren());
+		hb.getChildren().addAll(addRoot, addChildren);
 		
 		Mensch thomas = addRoot("Thomas", true);
 
-		window.getChildren().add(thomas);
+		window.getChildren().add(hb);
 		ScrollPane sp = new ScrollPane();
 		sp.setContent(window);
 		sp.setHbarPolicy(ScrollBarPolicy.ALWAYS);
@@ -51,6 +71,7 @@ public class Main extends Application {
 		root.setLayoutX(aktuelleBreite);
 		root.setLayoutY(rootHoehe);
 		aktuelleBreite += baumAbstand;
+		window.getChildren().add(root);
 		return root;
 	}
 
@@ -58,6 +79,16 @@ public class Main extends Application {
 		Mensch kind = new Mensch(kindName, m);
 		vater.addChildren(kind);
 		return kind;
+	}
+	
+	public void actionNewRoot(){
+		NewMensch.display();
+		addRoot(NewMensch.name, NewMensch.m);
+	}
+	
+	public void actionNewChildren(){
+		NewMensch.display();
+		addChildren(selected, NewMensch.name, NewMensch.m);
 	}
 
 
