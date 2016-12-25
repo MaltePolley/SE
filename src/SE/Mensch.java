@@ -15,7 +15,8 @@ public class Mensch extends Label{
 	Boolean m = false; 																// Männliche
 	Boolean w = false;																	// oder Weiblich
 	String name;																			// Name
-	
+	double sizeX = 100;
+	double sizeY = 35;
 	
 	public Mensch(String name, Boolean m){
 		super();	
@@ -28,7 +29,7 @@ public class Mensch extends Label{
 		}
 		
 		this.setOnMouseClicked(e->Select());  							// Beim Klick auf das Objekt wird Select() ausgeführt
-		setPrefSize(50, 30);															// Setzt Größe (Breite,Höhe)
+		setPrefSize(sizeX, sizeY);															// Setzt Größe (Breite,Höhe)
 		this.setText(name);															// Setzt den Labeltext auf den Namen
 		CSS(); 																					// Wendet CSS an
 	}
@@ -112,6 +113,20 @@ public class Mensch extends Label{
 	 */
 	public ArrayList<Mensch> getKinder(){
 		return kinder;
+	}
+	
+	/** Gibt die Coordinaten des Labels an der mittig untersten Stelle zurück
+	 * 
+	 * @return btmCoordiantes[0] = x, btmCoordiantes[1]=y
+	 */
+	public double[] getBottomCoordinates(){
+		double [] btmCoordinates = new double[2];
+		btmCoordinates[0] = this.getLayoutX() + (this.sizeX/2);
+		btmCoordinates[1] = this.getLayoutY() + (this.sizeY);
+		
+		
+		return btmCoordinates; 
+				
 	}
 	
 	public void Select(){
