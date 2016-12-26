@@ -129,6 +129,30 @@ public class Mensch extends Label{
 				
 	}
 	
+	
+	/** Heirats Koordinaten für Männer
+	 *  
+	 * @return Koordinaten die zum verheiraten gebraucht werden
+	 */
+	public double[] getHCM(){
+		double[] hcm = new double[2];
+		hcm[0] = this.getLayoutX() + (this.sizeX);
+		hcm[1] = this.getLayoutY() + (this.sizeY/2);
+		return hcm;
+	}
+	
+	/** Heirats Koordinaten für Frauen
+	 * 
+	 * @return Koordinaten die zum verheiraten gebraucht werden
+	 */
+	public double[] getHCW(){
+		double[] hcw = new double[2];
+		hcw[0] = this.getLayoutX();
+		hcw[1] = this.getLayoutY() + (this.sizeY/2);
+		return hcw;
+	}
+	
+	
 	public void Select(){
 		Main.secondSelected = Main.selected;
 		Main.selected = this;

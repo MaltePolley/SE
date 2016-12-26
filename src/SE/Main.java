@@ -15,10 +15,11 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	
 	final double rootHoehe = 100;
-	final double baumAbstand = 250;
+	final double baumAbstand = 300;
 	final double baumTiefe = 50;
 	final double firstDown = 50;
-	final double firstBreite = 50;
+	final double firstBreite = 75;
+	final double heiratBreite = 150;
 	double breite = 400;
 	double aktuelleBreite = 250;
 	double aktuelleTiefe = 0;
@@ -31,6 +32,7 @@ public class Main extends Application {
 	HBox hb = new HBox(10);
 	Button addRoot = new Button();
 	Button addChildren = new Button();
+	Button heirate = new Button();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -53,7 +55,12 @@ public class Main extends Application {
 		addChildren.setStyle("-fx-background-color: skyblue;"
 				+ "-fx-background-radius: 50");
 		addChildren.setOnAction(e->actionNewChildren());
-		hb.getChildren().addAll(addRoot, addChildren);
+		heirate.setPrefSize(200, 50);
+		heirate.setText("heirate");
+		heirate.setStyle("-fx-background-color: skyblue;"
+				+ "-fx-background-radius: 50;");
+		heirate.setOnAction(e->actionHeirate());
+		hb.getChildren().addAll(addRoot, addChildren, heirate);
 		
 		Mensch thomas = addRoot("Thomas", true);
 
@@ -82,6 +89,11 @@ public class Main extends Application {
 		if(vater.getKinder().isEmpty()){
 		Mensch kind = new Mensch(kindName, m);
 		vater.addChildren(kind);
+		if(vater.m){
+			kind.vater = vater;
+		}else{
+			kind.mutter = vater;
+		}
 		double[] vaterCoordinates = vater.getBottomCoordinates();
 		// Erste Linie die vom Vater abwärts geht
 			Line firstDownLine = new Line();
@@ -152,6 +164,38 @@ public class Main extends Application {
 		if(selected != null){
 		NewMensch.display();
 		addChildren(selected, NewMensch.name, NewMensch.m);
+		}
+	}
+	
+	public void actionHeirate(){
+		if(selected != null && selected.getKinder().isEmpty() && (selected.vater == null) && (selected.mutter == null) && (selected.partner == null)){
+			if(secondSelected.partner == null){
+				selected.partner = secondSelected;
+				secondSelected.partner = selected;
+				if(secondSelected.m && !selected.m){ // wenn secondSelected m
+					// Koordinaten neu setzen
+					selected.setLayoutX(secondSelected.getLayoutX()+heiratBreite);
+					selected.setLayoutY(secondSelected.getLayoutY());
+					// Heiratslinie zeichnen
+					Line heiratsLine = new Line();
+					heiratsLine.setStartX(secondSelected.getHCM()[0]);
+					heiratsLine.setStartY(secondSelected.getHCM()[1]);
+					heiratsLine.setEndX(selected.getHCW()[0]);
+					heiratsLine.setEndY(selected.getHCW()[1]);
+					window.getChildren().add(heiratsLine);
+				}else if(!secondSelected.m && selected.m){ // Wenn secondSelected w und selected m
+					// Koordinaten neu setzen
+					selected.setLayoutX(secondSelected.getLayoutX()-heiratBreite);
+					selected.setLayoutY(secondSelected.getLayoutY());
+					// Heiratslinie zeichnen
+					Line heiratsLine = new Line();
+					heiratsLine.setStartX(secondSelected.getHCW()[0]);
+					heiratsLine.setStartY(secondSelected.getHCW()[1]);
+					heiratsLine.setEndX(selected.getHCM()[0]);
+					heiratsLine.setEndY(selected.getHCM()[1]);
+					window.getChildren().add(heiratsLine);
+				}
+			}
 		}
 	}
 
