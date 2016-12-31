@@ -23,6 +23,7 @@ public class Main extends Application {
 	double breite = 400;
 	double aktuelleBreite = 250;
 	double aktuelleTiefe = 0;
+	boolean einmal = true;
 	ArrayList<Mensch> rootNodes = new ArrayList<Mensch>();
 	Pane window;
 	static Mensch selected = null;
@@ -33,11 +34,16 @@ public class Main extends Application {
 	Button addRoot = new Button();
 	Button addChildren = new Button();
 	Button heirate = new Button();
-
+	Button reDrawButton = new Button();
+	Button addNewRootParent = new Button();
+	Button addChildTree = new Button();
+	
+	// Main
 	public static void main(String[] args) {
 		launch(args);
 	}
-
+	
+	// Javafx-Main
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Stammbaum");
@@ -60,9 +66,24 @@ public class Main extends Application {
 		heirate.setStyle("-fx-background-color: skyblue;"
 				+ "-fx-background-radius: 50;");
 		heirate.setOnAction(e->actionHeirate());
-		hb.getChildren().addAll(addRoot, addChildren, heirate);
+		reDrawButton.setPrefSize(200, 50);
+		reDrawButton.setText("Redraw");
+		reDrawButton.setStyle("-fx-background-color: skyblue;"
+				+ "-fx-background-radius: 50;");
+		reDrawButton.setOnAction(e->{redraw();});
+		addNewRootParent.setPrefSize(200, 50);
+		addNewRootParent.setText("addNewRootParent");
+		addNewRootParent.setStyle("-fx-background-color: skyblue;"
+				+ "-fx-background-radius: 50;");
+		addNewRootParent.setOnAction(e->{actionAddRootParent();});
+		addChildTree.setPrefSize(200, 50);
+		addChildTree.setText("addChildTree");
+		addChildTree.setStyle("-fx-background-color: skyblue;"
+				+ "-fx-background-radius: 50;");
+		addChildTree.setOnAction(e->{actionAddChildTree();});
+		hb.getChildren().addAll(addRoot, addChildren, heirate, reDrawButton, addNewRootParent, addChildTree);
 		
-		Mensch thomas = addRoot("Thomas", true);
+		Mensch thomas = addRoot(new Mensch("Thomas", true));
 
 		window.getChildren().add(hb);
 		ScrollPane sp = new ScrollPane();
@@ -75,8 +96,7 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 
-	public Mensch addRoot(String name, Boolean m) {
-		Mensch root = new Mensch(name, m);
+	public Mensch addRoot(Mensch root) {
 		rootNodes.add(root);
 		root.setLayoutX(aktuelleBreite);
 		root.setLayoutY(rootHoehe);
@@ -86,9 +106,19 @@ public class Main extends Application {
 	}
 
 	public Mensch addChildren(Mensch vater, String kindName, Boolean m) {
-		if(vater.getKinder().isEmpty()){
 		Mensch kind = new Mensch(kindName, m);
+		
+		
+		
+		if(vater.getKinder().isEmpty()){
+			window.getChildren().add(vater.childLine);
+		}
+		
 		vater.addChildren(kind);
+		
+		
+		
+		
 		if(vater.m){
 			kind.vater = vater;
 		}else{
@@ -116,14 +146,56 @@ public class Main extends Application {
 			Line secondLineDown = new Line();
 			secondLineDown.setStartX(vaterCoordinates[0]+firstBreite);
 			secondLineDown.setStartY(vaterCoordinates[1]+firstDown);
-			secondLineDown.setEndX(vaterCoordinates[0]+firstBreite);
-			secondLineDown.setEndY(vaterCoordinates[1]+firstDown+firstDown);
+			double endX = vaterCoordinates[0]+firstBreite;
+			double endY = vaterCoordinates[1]+firstDown+firstDown;
+			secondLineDown.setEndX(endX);
+			secondLineDown.setEndY(endY);
 			window.getChildren().add(secondLineDown);
 			
-			//Kind hinzufügen
-			kind.setLayoutX(vaterCoordinates[0]+firstBreite-(kind.sizeX/2));
-			kind.setLayoutY(vaterCoordinates[1]+firstDown+firstDown);
-			window.getChildren().add(kind);
+			
+			Line childLine = vater.childLine;
+			if(vater.wertSwitch){
+				Line underLine = new Line();
+				underLine.setStartX(endX + vater.aktuelleChildBreite);
+				underLine.setStartY(endY);
+				underLine.setEndX(endX + vater.aktuelleChildBreite);
+				underLine.setEndY(endY+firstDown);
+				window.getChildren().add(underLine);
+				
+				//Kind hinzufügen
+				kind.setLayoutX(endX + vater.aktuelleChildBreite-(kind.sizeX/2));
+				kind.setLayoutY(endY+firstDown);
+				window.getChildren().add(kind);
+				
+				//QuerLinie
+				vater.childLine.setStartX(endX+vater.aktuelleChildBreite);
+				vater.childLine.setStartY(endY);
+				if(vater.childLine.getEndY()==0 || vater.childLine.getEndX()==0){
+					vater.childLine.setEndX(endX);
+					vater.childLine.setEndY(endY);
+				}
+				
+				vater.aktuelleChildBreite += baumAbstand;
+				vater.wertSwitch = false;
+			}else{
+				Line underLine = new Line();
+				underLine.setStartX(endX - vater.aktuelleChildBreite);
+				underLine.setStartY(endY);
+				underLine.setEndX(endX - vater.aktuelleChildBreite);
+				underLine.setEndY(endY + firstDown);
+				window.getChildren().add(underLine);
+
+				//Kind hinzufügen
+				kind.setLayoutX(endX - vater.aktuelleChildBreite-(kind.sizeX/2));
+				kind.setLayoutY(endY+firstDown);
+				window.getChildren().add(kind);
+				
+				//QuerLinie
+				vater.childLine.setEndX(endX-vater.aktuelleChildBreite);
+				vater.childLine.setEndY(endY);
+				
+				vater.wertSwitch = true;
+			}
 			}else{
 				Line firstLineQuer = new Line();
 				firstLineQuer.setStartX(vaterCoordinates[0]);
@@ -136,19 +208,59 @@ public class Main extends Application {
 				Line secondLineDown = new Line();
 				secondLineDown.setStartX(vaterCoordinates[0]-firstBreite);
 				secondLineDown.setStartY(vaterCoordinates[1]+firstDown);
-				secondLineDown.setEndX(vaterCoordinates[0]-firstBreite);
-				secondLineDown.setEndY(vaterCoordinates[1]+firstDown+firstDown);
+				double endX = vaterCoordinates[0]-firstBreite;
+				double endY = vaterCoordinates[1]+firstDown+firstDown;
+				secondLineDown.setEndX(endX);
+				secondLineDown.setEndY(endY);
 				window.getChildren().add(secondLineDown);
 				
-				//Kind hinzufügen
-				kind.setLayoutX(vaterCoordinates[0]-firstBreite-(kind.sizeX/2));
-				kind.setLayoutY(vaterCoordinates[1]+firstDown+firstDown);
-				window.getChildren().add(kind);
-			}
-			
+				if(vater.wertSwitch){
+					Line underLine = new Line();
+					underLine.setStartX(endX + vater.aktuelleChildBreite);
+					underLine.setStartY(endY);
+					underLine.setEndX(endX + vater.aktuelleChildBreite);
+					underLine.setEndY(endY + firstDown);
+					window.getChildren().add(underLine);
+
+					//Kind hinzufügen
+					kind.setLayoutX(endX + vater.aktuelleChildBreite-(kind.sizeX/2));
+					kind.setLayoutY(endY+firstDown);
+					window.getChildren().add(kind);
+										
+					//QuerLinie
+					vater.childLine.setStartX(endX+vater.aktuelleChildBreite);
+					vater.childLine.setStartY(endY);
+					if(vater.childLine.getEndY()==0 || vater.childLine.getEndX()==0){
+						vater.childLine.setEndX(endX);
+						vater.childLine.setEndY(endY);
+					}
+									
+					vater.aktuelleChildBreite += baumAbstand;
+					vater.wertSwitch = false;	
+				}else{
+					Line underLine = new Line();
+					underLine.setStartX(endX - vater.aktuelleChildBreite);
+					underLine.setStartY(endY);
+					underLine.setEndX(endX - vater.aktuelleChildBreite);
+					underLine.setEndY(endY + firstDown+firstDown);
+					window.getChildren().add(underLine);
+
+					//Kind hinzufügen
+					kind.setLayoutX(endX - vater.aktuelleChildBreite-(kind.sizeX/2));
+					kind.setLayoutY(endY+firstDown+firstDown);
+					window.getChildren().add(kind);
+					
+					//QuerLinie
+					vater.childLine.setEndX(endX-vater.aktuelleChildBreite);
+					vater.childLine.setEndY(endY);
+					
+					vater.wertSwitch = true;
+				}	
 		
 			return kind;
 		}
+			
+			
 		
 		return null;
 
@@ -157,7 +269,8 @@ public class Main extends Application {
 	
 	public void actionNewRoot(){
 		NewMensch.display();
-		addRoot(NewMensch.name, NewMensch.m);
+		Mensch root = new Mensch(NewMensch.name, NewMensch.m);
+		addRoot(root);
 	}
 	
 	public void actionNewChildren(){
@@ -165,6 +278,32 @@ public class Main extends Application {
 		NewMensch.display();
 		addChildren(selected, NewMensch.name, NewMensch.m);
 		}
+	}
+	
+	/**
+	 *  Fügt selected ein neuen Eltern Knoten hinzu
+	 *  Entfernt selected aus rootList und fügt den neuen Knoten dort hinzu
+	 */
+	public void actionAddRootParent(){
+		if(selected!=null && rootNodes.contains(selected)){
+			NewMensch.display();
+			Mensch newParent = new Mensch(NewMensch.name, NewMensch.m);
+			
+			// Selected Vater oder Mutter zuweisen
+			if(newParent.m){
+				selected.vater = newParent;
+			}else{
+				selected.mutter = newParent;
+			}
+			//Fügt new Parent, Selected als Kind hinzu
+			newParent.addChildren(selected);
+			// Selected aus rootNodes entfernen und newParent hinzufügen
+			rootNodes.remove(selected);
+			addRoot(newParent);
+			// Bäume neu zeichnen
+			redraw();
+		}
+		
 	}
 	
 	public void actionHeirate(){
@@ -198,5 +337,249 @@ public class Main extends Application {
 			}
 		}
 	}
+	
+	
+	public void actionAddChildTree(){
+		if(selected!=null && secondSelected!=null && (!checkForCycle(selected, secondSelected))){
+			if(rootNodes.contains(secondSelected)){
+				rootNodes.remove(secondSelected);
+			}
+			selected.getKinder().add(secondSelected);
+			if(selected.m){
+				secondSelected.vater = selected;
+			}else{
+				secondSelected.mutter = selected;
+			}
+			
+			redraw();
+		}
+	}
+	
+	/**
+	 *  Zeichnet die Bäume neu
+	 */
+	public void redraw(){
+		einmal = true;
+		window.getChildren().clear();
+		window.getChildren().add(hb);
+		aktuelleBreite = 250;
+		for(int i = 0; i<rootNodes.size(); i++){
+			traverseAndAddChildren(rootNodes.get(i));
+			
+		}
+	}
+	
+	
+	public void traverseAndAddChildren(Mensch root){
+		ArrayList<Mensch> kindListe = root.getKinder();
+		root.aktuelleChildBreite = 0;
+		root.wertSwitch = true;
+		if(rootNodes.contains(root)){
+			root.setLayoutX(aktuelleBreite);
+			aktuelleBreite+=baumAbstand;
+		}
+		if(!window.getChildren().contains(root)){
+		window.getChildren().add(root);
+		}
+		for(int i = 0; i<kindListe.size();i++){
+			addChildren(root, kindListe.get(i));
+			traverseAndAddChildren(kindListe.get(i));
+			
+		}
+	}
+	
+	public boolean checkForCycle(Mensch m1, Mensch m2){
+		for(int i = 0;i<rootNodes.size();i++){
+			if(traverseAndCheckCycle(rootNodes.get(i), m1, m2, false, false)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean traverseAndCheckCycle(Mensch root, Mensch m1, Mensch m2, boolean b1, boolean b2){
+		if(root==m1){
+			b1 = true;
+		}
+		if(root==m2){
+			b2 = true;
+		}
+		if(b1 && b2){
+			return true;
+		}else{
+			for(int i = 0; i< root.getKinder().size();i++){
+				if(traverseAndCheckCycle(root.getKinder().get(i), m1, m2, b1, b2)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
+	public Mensch addChildren(Mensch vater, Mensch kind){
+			
+			if(einmal){
+				window.getChildren().add(vater.childLine);
+				einmal = false;
+			}
+			
+		
+		
+		if(!vater.getKinder().contains(kind)){
+		vater.addChildren(kind);
+		}
+		
+		
+		
+		if(vater.m){
+			kind.vater = vater;
+		}else{
+			kind.mutter = vater;
+		}
+		double[] vaterCoordinates = vater.getBottomCoordinates();
+		// Erste Linie die vom Vater abwärts geht
+			Line firstDownLine = new Line();
+			firstDownLine.setStartX(vaterCoordinates[0]);
+			firstDownLine.setStartY(vaterCoordinates[1]);
+			firstDownLine.setEndX(vaterCoordinates[0]);
+			firstDownLine.setEndY(vaterCoordinates[1]+firstDown);
+			window.getChildren().add(firstDownLine);
+			
+		// Zweite Linie die abhängig vom Geschlecht nach links oder rechts geht
+			if(vater.m){
+			Line firstLineQuer = new Line();
+			firstLineQuer.setStartX(vaterCoordinates[0]);
+			firstLineQuer.setStartY(vaterCoordinates[1]+firstDown);
+			firstLineQuer.setEndX(vaterCoordinates[0]+firstBreite);
+			firstLineQuer.setEndY(vaterCoordinates[1]+firstDown);
+			window.getChildren().add(firstLineQuer);
+			
+			//Dritte Linie
+			Line secondLineDown = new Line();
+			secondLineDown.setStartX(vaterCoordinates[0]+firstBreite);
+			secondLineDown.setStartY(vaterCoordinates[1]+firstDown);
+			double endX = vaterCoordinates[0]+firstBreite;
+			double endY = vaterCoordinates[1]+firstDown+firstDown;
+			secondLineDown.setEndX(endX);
+			secondLineDown.setEndY(endY);
+			window.getChildren().add(secondLineDown);
+			
+			
+			Line childLine = vater.childLine;
+			if(vater.wertSwitch){
+				Line underLine = new Line();
+				underLine.setStartX(endX + vater.aktuelleChildBreite);
+				underLine.setStartY(endY);
+				underLine.setEndX(endX + vater.aktuelleChildBreite);
+				underLine.setEndY(endY+firstDown);
+				window.getChildren().add(underLine);
+				
+				//Kind hinzufügen
+				kind.setLayoutX(endX + vater.aktuelleChildBreite-(kind.sizeX/2));
+				kind.setLayoutY(endY+firstDown);
+				window.getChildren().add(kind);
+				
+				//QuerLinie
+				vater.childLine.setStartX(endX+vater.aktuelleChildBreite);
+				vater.childLine.setStartY(endY);
+				if(vater.childLine.getEndY()==0 || vater.childLine.getEndX()==0){
+					vater.childLine.setEndX(endX);
+					vater.childLine.setEndY(endY);
+				}
+				
+				vater.aktuelleChildBreite += baumAbstand;
+				vater.wertSwitch = false;
+			}else{
+				Line underLine = new Line();
+				underLine.setStartX(endX - vater.aktuelleChildBreite);
+				underLine.setStartY(endY);
+				underLine.setEndX(endX - vater.aktuelleChildBreite);
+				underLine.setEndY(endY + firstDown);
+				window.getChildren().add(underLine);
 
-}
+				//Kind hinzufügen
+				kind.setLayoutX(endX - vater.aktuelleChildBreite-(kind.sizeX/2));
+				kind.setLayoutY(endY+firstDown);
+				window.getChildren().add(kind);
+				
+				//QuerLinie
+				vater.childLine.setEndX(endX-vater.aktuelleChildBreite);
+				vater.childLine.setEndY(endY);
+				
+				vater.wertSwitch = true;
+			}
+			}else{
+				Line firstLineQuer = new Line();
+				firstLineQuer.setStartX(vaterCoordinates[0]);
+				firstLineQuer.setStartY(vaterCoordinates[1]+firstDown);
+				firstLineQuer.setEndX(vaterCoordinates[0]-firstBreite);
+				firstLineQuer.setEndY(vaterCoordinates[1]+firstDown);
+				window.getChildren().add(firstLineQuer);
+				
+				//Dritte Linie
+				Line secondLineDown = new Line();
+				secondLineDown.setStartX(vaterCoordinates[0]-firstBreite);
+				secondLineDown.setStartY(vaterCoordinates[1]+firstDown);
+				double endX = vaterCoordinates[0]-firstBreite;
+				double endY = vaterCoordinates[1]+firstDown+firstDown;
+				secondLineDown.setEndX(endX);
+				secondLineDown.setEndY(endY);
+				window.getChildren().add(secondLineDown);
+				
+				if(vater.wertSwitch){
+					Line underLine = new Line();
+					underLine.setStartX(endX + vater.aktuelleChildBreite);
+					underLine.setStartY(endY);
+					underLine.setEndX(endX + vater.aktuelleChildBreite);
+					underLine.setEndY(endY + firstDown);
+					window.getChildren().add(underLine);
+
+					//Kind hinzufügen
+					kind.setLayoutX(endX + vater.aktuelleChildBreite-(kind.sizeX/2));
+					kind.setLayoutY(endY+firstDown);
+					window.getChildren().add(kind);
+										
+					//QuerLinie
+					vater.childLine.setStartX(endX+vater.aktuelleChildBreite);
+					vater.childLine.setStartY(endY);
+					if(vater.childLine.getEndY()==0 || vater.childLine.getEndX()==0){
+						vater.childLine.setEndX(endX);
+						vater.childLine.setEndY(endY);
+					}
+									
+					vater.aktuelleChildBreite += baumAbstand;
+					vater.wertSwitch = false;	
+				}else{
+					Line underLine = new Line();
+					underLine.setStartX(endX - vater.aktuelleChildBreite);
+					underLine.setStartY(endY);
+					underLine.setEndX(endX - vater.aktuelleChildBreite);
+					underLine.setEndY(endY + firstDown+firstDown);
+					window.getChildren().add(underLine);
+
+					//Kind hinzufügen
+					kind.setLayoutX(endX - vater.aktuelleChildBreite-(kind.sizeX/2));
+					kind.setLayoutY(endY+firstDown+firstDown);
+					window.getChildren().add(kind);
+					
+					//QuerLinie
+					vater.childLine.setEndX(endX-vater.aktuelleChildBreite);
+					vater.childLine.setEndY(endY);
+					
+					vater.wertSwitch = true;
+				}	
+		
+			return kind;
+		}
+			
+			
+		
+		return null;
+
+		
+	}
+
+	}
+
+

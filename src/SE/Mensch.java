@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 
 public class Mensch extends Label{
@@ -12,11 +13,15 @@ public class Mensch extends Label{
 	Mensch vater = null; 																// Vater
 	Mensch mutter = null;														    // Mutter
 	Mensch partner = null; 															// Ehepartner
-	Boolean m = false; 																// Männliche
-	Boolean w = false;																	// oder Weiblich
+	boolean m = false; 																// Männliche
+	boolean w = false;																	// oder Weiblich
 	String name;																			// Name
 	double sizeX = 100;
 	double sizeY = 35;
+	boolean wertSwitch = true;
+	Line childLine = new Line();
+	double aktuelleChildBreite = 0;
+	
 	
 	public Mensch(String name, Boolean m){
 		super();	
