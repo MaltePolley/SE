@@ -23,7 +23,6 @@ public class Main extends Application {
 	double breite = 400;
 	double aktuelleBreite = 250;
 	double aktuelleTiefe = 0;
-	boolean einmal = true;
 	ArrayList<Mensch> rootNodes = new ArrayList<Mensch>();
 	Pane window;
 	static Mensch selected = null;
@@ -110,9 +109,11 @@ public class Main extends Application {
 		
 		
 		
-		if(vater.getKinder().isEmpty()){
+		if(!window.getChildren().contains(vater.childLine)){
 			window.getChildren().add(vater.childLine);
 		}
+			
+
 		
 		vater.addChildren(kind);
 		
@@ -359,7 +360,6 @@ public class Main extends Application {
 	 *  Zeichnet die Bäume neu
 	 */
 	public void redraw(){
-		einmal = true;
 		window.getChildren().clear();
 		window.getChildren().add(hb);
 		aktuelleBreite = 250;
@@ -419,9 +419,8 @@ public class Main extends Application {
 	
 	public Mensch addChildren(Mensch vater, Mensch kind){
 			
-			if(einmal){
+			if(!window.getChildren().contains(vater.childLine)){
 				window.getChildren().add(vater.childLine);
-				einmal = false;
 			}
 			
 		
