@@ -308,7 +308,7 @@ public class Main extends Application {
 	}
 	
 	public void actionHeirate(){
-		if(selected != null && selected.getKinder().isEmpty() && (selected.vater == null) && (selected.mutter == null) && (selected.partner == null)){
+		if(selected != null && secondSelected!=null && selected.getKinder().isEmpty() && (selected.vater == null) && (selected.mutter == null) && (selected.partner == null)){
 			if(secondSelected.partner == null){
 				selected.partner = secondSelected;
 				secondSelected.partner = selected;
