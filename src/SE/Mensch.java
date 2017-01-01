@@ -21,7 +21,7 @@ public class Mensch extends Label{
 	boolean wertSwitch = true;
 	Line childLine = new Line();
 	double aktuelleChildBreite = 0;
-	
+
 	
 	public Mensch(String name, Boolean m){
 		super();	
@@ -161,8 +161,8 @@ public class Mensch extends Label{
 	public void Select(){
 		Main.secondSelected = Main.selected;
 		Main.selected = this;
-		System.out.println("DEBUG-Selected = " + Main.selected.name);
+		Main.log.setText("DEBUG-Selected = " + Main.selected.name + "\n");
 		if(Main.secondSelected!=null)
-			System.out.println("DEBUG-SecondSelected = " + Main.secondSelected.name);
+			Main.log.setText(Main.log.getText() + "DEBUG-SecondSelected = " + Main.secondSelected.name);
 	}
 }
