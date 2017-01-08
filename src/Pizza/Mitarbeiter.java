@@ -2,13 +2,18 @@ package Pizza;
 
 public class Mitarbeiter {
 	
+	int id;
+	Filialien filialie;
+	
 	/** 
 	 * Konstruktor
 	 */
-	public Mitarbeiter(){
-		
+	public Mitarbeiter(int id, Filialien filialie){
+		this.id = id;
+		this.filialie = filialie;
 	}
-	
+
+
 	public void erstelleAngebot(){
 		
 	}
@@ -34,6 +39,10 @@ public class Mitarbeiter {
 	}
 	
 	public void filialienVorräteAktualisieren(){
+		
+	}
+	
+	public void warnung(){
 		
 	}
 }

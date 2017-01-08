@@ -1,8 +1,9 @@
 package Pizza;
 
-public class Koch {
+public class Koch extends Mitarbeiter{
 	
-	public Koch(){
+	public Koch(int id, Filialien filialie){
+		super(id, filialie );
 		
 	}
 	

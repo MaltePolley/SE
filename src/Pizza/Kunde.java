@@ -6,15 +6,20 @@ public class Kunde {
 
 
 	ArrayList<Order> orders = new ArrayList<Order>();
-	String vorname, nachname, adresse, handynummer ;
+	String vorname, nachname, straße, ort, handynummer ;
+	int plz;
 	Boolean neukunde;
 	int sperrMonat;
 	
 	/**
 	 * Konstruktor
 	 */
-	public Kunde(){
-		
+	public Kunde(String vorname, String nachname, String straße, String ort, String handynummer){
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.straße = straße;
+		this.ort = ort;
+		this.handynummer = handynummer;
 	}
 	
 	/**
@@ -45,5 +50,12 @@ public class Kunde {
 	public void changeOrder(){
 		
 	}
+	
+	public void storniereOrder(){
+		
+	}
 
+	public void checkHandynummer(String handynummer){
+		
+	}
 }

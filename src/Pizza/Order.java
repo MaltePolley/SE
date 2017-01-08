@@ -5,15 +5,23 @@ import java.util.ArrayList;
 public class Order {
 	
 	ArrayList<Pizza> pizzen = new ArrayList<Pizza>();
+	Filialien filialie;
+	Kunde kunde;
 	String handynummer;
 	double endPreis = 0;
 	Status status;
+	String datum;
+	String erwarteteLieferzeit;
+	boolean lieferung;
+	boolean locked = false;
+	
 	
 	/**
 	 * Konstruktor
 	 */
-	public Order(){
-		
+	public Order(Filialien filialie, String datum){
+		this.filialie = filialie;
+		this.datum = datum;
 	}
 	
 	/**
@@ -25,6 +33,14 @@ public class Order {
 			endPreis += pizzen.get(i).endPreis;
 		}
 		return endPreis;
+	}
+	
+	public void lockOrder(){
+		locked = true;
+	}
+	
+	public void verSpätung(){
+		
 	}
 
 }

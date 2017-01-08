@@ -10,14 +10,17 @@ public class Pizza {
 	PizzaGröße pg;
 	ArrayList<Toppings> toppings = new ArrayList<Toppings>();
 	PizzaArt pizzaArt;
+	Rezept rezept;
 	
 	
 	/**
 	 * Konstruktor
 	 */
-	public Pizza(PizzaArt pa, PizzaGröße pg){
+	public Pizza(PizzaArt pa, PizzaGröße pg, ArrayList<Toppings> toppings, Rezept rezept){
 		this.pizzaArt = pa;
 		this.pg = pg;
+		this.toppings = toppings;
+		this.rezept = rezept;
 		berechnePreis();
 	}
 
