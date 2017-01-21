@@ -57,12 +57,25 @@ public class MainTests {
                     		//Kind einem Menschen hinzufügen
                     		Mensch Kevin = new Mensch("Kevin", true);
                     		Mensch Chantal = new Mensch("Chantal", false);
+                    		Mensch Klaus = new Mensch("Klaus", true); 
+                    		Mensch Isabell = new Mensch("Isabell", false); 
+                    		Mensch Harald = new Mensch("Harald", true);
+                    		Mensch Peter = new Mensch("Peter", true);
                     		Lea.addChildren(Kevin);
                     		Lea.addChildren(Chantal); //Kevin und Chantal sind nun Kinder von Lea
                     		Kevin.addParent(Lea);
                     		Kevin.addParent(Tom); //Lea und Tom sind nun Eltern von Kevin
                     		Chantal.addParent(Lea);
                     		Chantal.addParent(Tom); //Lea und Tom sind nun Eltern von Chantal
+                    		Lea.addGeschwister(Klaus);
+                    		Klaus.addGeschwister(Lea);
+                    		Tom.addGeschwister(Isabell);
+                    		Isabell.addGeschwister(Tom);
+                    		Kevin.addChildren(Harald);
+                    		Kevin.addChildren(Peter);
+                    		Peter.addParent(Kevin);
+                    		Harald.addParent(Kevin);
+                    		
                     		
                     		assertTrue(Tom == Kevin.getEltern()[0]);
                     		assertTrue(Lea == Kevin.getEltern()[1]); // überprüft Eltern von Kevin
@@ -75,6 +88,25 @@ public class MainTests {
                     		assertTrue(Kevin == Lea.kinder.get(0));
                     		assertTrue(Chantal == Lea.kinder.get(1)); //Kevin ist Leas erstes Kind und Chantal ihr zweites
                     		System.out.println("Kinder von Lea: " + Lea.kinder.get(0) + ", " + Lea.kinder.get(1));
+                    		
+                    		assertTrue(Kevin == Chantal.geschwister.get(0));
+                    		assertTrue(Chantal == Kevin.geschwister.get(0)); //Kevin und Chantal sind Geschwister
+                    		assertTrue(Klaus == Lea.geschwister.get(0)); 
+                    		assertTrue(Lea == Klaus.geschwister.get(0)); //Lea und Klaus sind Geschwister 
+                    		
+                    		//Klaus ist Kevins und Chantals Onkel und Isabell ist Kevins und Chantals Tante
+                    		assertTrue(Klaus == Chantal.getVerwandte(Chantal, 1).get(0));
+                    		assertTrue(Isabell == Kevin.getVerwandte(Kevin, 0).get(0)); 
+                    		System.out.println("Tante von Kevin: " + Kevin.getVerwandte(Kevin, 0));
+                    		System.out.println("Tante von Chantal: " + Chantal.getVerwandte(Chantal, 0));
+                    		
+                    		//Die Großeltern von Peter und Harald sind Lea und Tom
+                    		//System.out.println("Papa von Peter: " + Peter.getEltern()[0]);
+                    		assertTrue(Tom == Peter.getGroßeltern(Peter, 0)[0]);
+                    		assertTrue(Lea == Peter.getGroßeltern(Peter, 0)[1]);
+                    		assertTrue(Tom == Harald.getGroßeltern(Harald, 0)[0]);
+                    		assertTrue(Lea == Harald.getGroßeltern(Harald, 0)[1]);
+                    		System.out.println("Großeltern von Peter & Harald: " + Peter.getGroßeltern(Peter, 0)[0] + " " + Peter.getGroßeltern(Peter, 0)[1]);
                     }
                 });
             }

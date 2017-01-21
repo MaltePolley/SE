@@ -1,5 +1,3 @@
-package SE;
-
 import java.util.ArrayList;
 
 import javafx.scene.control.Label;
@@ -9,13 +7,14 @@ import javafx.scene.shape.Line;
 
 public class Mensch extends Label{
 	
-	ArrayList<Mensch> kinder = new ArrayList<Mensch>();		// Kinder Liste
-	Mensch vater = null; 																// Vater
-	Mensch mutter = null;														    // Mutter
-	Mensch partner = null; 															// Ehepartner
-	boolean m = false; 																// Männliche
-	boolean w = false;																	// oder Weiblich
-	String name;																			// Name
+	ArrayList<Mensch> geschwister = new ArrayList<Mensch>();	// Geschwister
+	ArrayList<Mensch> kinder = new ArrayList<Mensch>();			// Kinder Liste
+	Mensch vater = null; 										// Vater
+	Mensch mutter = null;								    	// Mutter
+	Mensch partner = null;										// Ehepartner
+	boolean m = false; 											// Männliche
+	boolean w = false;											// oder Weiblich
+	String name;												// Name
 	double sizeX = 100;
 	double sizeY = 35;
 	boolean wertSwitch = true;
@@ -50,7 +49,17 @@ public class Mensch extends Label{
 	 * @param kind
 	 */
 	public void addChildren(Mensch kind){
+		if(kinder != null){
+			for(int i=0; i==(kinder.size()-1);i++){
+				kinder.get(i).geschwister.add(kind); // wenn kein EInzelkind, füge jedem Kind neues Kind als Geschwisterkind hinzu.
+				kind.geschwister.add(kinder.get(i)); // füge neuem Kind jedes vorhandene Kind als Geschwisterkind hinzu; 
+			}
+		}
 		kinder.add(kind);
+	}
+	
+	public void addGeschwister(Mensch mensch){
+		geschwister.add(mensch);
 	}
 
 	/**
@@ -118,6 +127,18 @@ public class Mensch extends Label{
 	 */
 	public ArrayList<Mensch> getKinder(){
 		return kinder;
+	}
+	
+	public ArrayList<Mensch> getGeschwister(){
+		return geschwister;
+	}
+	
+	public ArrayList<Mensch> getVerwandte(Mensch mensch, int i){	//wobei i = 0 Vater & i = 1 Mutter
+		return mensch.getEltern()[i].geschwister;  					//Gibt Geschwister der Eltern zurück (Onkel & Tannte)
+	}
+	
+	public Mensch[] getGroßeltern(Mensch mensch, int i){			//wobei i = 0 Vater & i = 1 Mutter
+		return mensch.getEltern()[i].getEltern(); 					//gibt Eltern der Eltern zurück 
 	}
 	
 	/** Gibt die Coordinaten des Labels an der mittig untersten Stelle zurück

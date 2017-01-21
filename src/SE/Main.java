@@ -1,5 +1,3 @@
-package SE;
-
 import java.util.ArrayList;
 
 import javafx.application.Application;
