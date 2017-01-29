@@ -1,3 +1,5 @@
+package SE;
+
 import java.util.ArrayList;
 
 import javafx.scene.control.Label;
@@ -134,7 +136,7 @@ public class Mensch extends Label{
 	}
 	
 	public ArrayList<Mensch> getVerwandte(Mensch mensch, int i){	//wobei i = 0 Vater & i = 1 Mutter
-		return mensch.getEltern()[i].geschwister;  					//Gibt Geschwister der Eltern zurück (Onkel & Tannte)
+		return mensch.getEltern()[i].geschwister; 				//Gibt Geschwister der Eltern zurück (Onkel & Tannte)
 	}
 	
 	public Mensch[] getGroßeltern(Mensch mensch, int i){			//wobei i = 0 Vater & i = 1 Mutter
