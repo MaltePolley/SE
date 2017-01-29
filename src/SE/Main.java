@@ -101,8 +101,7 @@ public class Main extends Application {
 			actionAddChildTree();
 		});
 		Tooltip addChildTreeT = new Tooltip();
-		addChildTreeT.setText("Choose two Nodes to:\n"
-				+ "add the second Node to the first one as a Child");
+		addChildTreeT.setText("Choose two Nodes to:\n" + "add the second Node to the first one as a Child");
 		beziehungen.setPrefSize(200, 50);
 		beziehungen.setText("Beziehungen");
 		beziehungen.setStyle("-fx-background-color: skyblue;" + "-fx-background-radius: 50;");
@@ -113,7 +112,8 @@ public class Main extends Application {
 		beziehungenT.setText("Shows relationship of a Node.");
 		beziehungen.setTooltip(beziehungenT);
 		log.setText("Log");
-		hb.getChildren().addAll(addRoot, addChildren, heirate, reDrawButton, addNewRootParent, addChildTree,beziehungen, log);
+		hb.getChildren().addAll(addRoot, addChildren, heirate, reDrawButton, addNewRootParent, addChildTree,
+				beziehungen, log);
 
 		Mensch thomas = addRoot(new Mensch("Thomas", true));
 
@@ -386,125 +386,159 @@ public class Main extends Application {
 
 	public void actionBeziehungen() {
 		if (selected.vater != null) { // Wenn er einen Vater hat
+			log.setText(log.getText() + "\nVater: " + selected.vater.name);
 			// Geschwister setzen
-			for (int i = 0; i < selected.vater.getKinder().size(); i++) {
-				log.setText(log.getText() + "\nGeschwister: ");
-				if (selected != selected.vater.getKinder().get(i)) { // Ausschließen
-																		// dass
-																		// selected
-																		// selbst
-																		// als
-																		// Geschwister
-																		// zählt
-					log.setText(log.getText() + selected.vater.getKinder().get(i).name + ", ");
+			if(!selected.getGeschwister().isEmpty()){
+			log.setText(log.getText() + "\nGeschwister: ");
+			for (int i = 0; i < selected.getGeschwister().size(); i++) {
+				if (selected != selected.getGeschwister().get(i)) { // Ausschließen
+																	// dass
+																	// selected
+																	// selbst
+																	// als
+																	// Geschwister
+																	// zählt
+					log.setText(log.getText() + selected.getGeschwister().get(i).name + ", ");
 				}
 			}
-			if (selected.vater.vater != null) { // Wenn er einen Großvater hat
-				log.setText(log.getText() + "\nGroßvater väterlicherseits: " + selected.vater.vater.name);
+			}
+			if (selected.getGroßeltern(0)[0] != null) { // Wenn er einen
+														// Großvater hat
+				log.setText(log.getText() + "\nGroßvater väterlicherseits: " + selected.getGroßeltern(0)[0].name);
 				// Onkel Tanten väterlicherseits setzen
-				log.setText("\nOnkel/Tanten väterlicherseits: ");
-				for (int x = 0; x < selected.vater.vater.getKinder().size(); x++) {
-					if (selected.vater != selected.vater.vater.getKinder().get(x)) {
-						log.setText(log.getText() + selected.vater.vater.getKinder().get(x).name + ", ");
+				if(!selected.getGroßeltern(0)[0].getKinder().isEmpty()){
+				log.setText(log.getText() + "\nOnkel/Tanten väterlicherseits: ");
+				for (int x = 0; x < selected.getGroßeltern(0)[0].getKinder().size(); x++) {
+					if (selected.vater != selected.getGroßeltern(0)[0].getKinder().get(x)) {
+						log.setText(log.getText() + selected.getGroßeltern(0)[0].getKinder().get(x).name + ", ");
+					}
+				}
+				}
+				
+				// Cousins väterlicherseits setzen
+				if(!selected.getGroßeltern(0)[0].getKinder().isEmpty()){
+				log.setText(log.getText() + "\nCousins väterlicherseits: ");
+				for (int i = 0; i < selected.getGroßeltern(0)[0].getKinder().size(); i++) {
+					if ((selected.getGroßeltern(0)[0].getKinder().get(i) != selected.vater)) {
+						for (int x = 0; x < selected.getGroßeltern(0)[0].getKinder().get(i).getKinder().size(); x++) {
+							if (selected.vater != selected.getGroßeltern(0)[0].getKinder().get(i)) {
+								log.setText(log.getText()
+										+ selected.getGroßeltern(0)[0].getKinder().get(i).getKinder().get(x).name
+										+ ", ");
+							}
+						}
+					}
+				}
+				}
+			} // Ende wenn er Großvater hat
+
+			if (selected.getGroßeltern(0)[1] != null) { // Großmutter
+														// väterlicherseits
+				log.setText(log.getText() + "\nGroßmutter väterlicherseits: " + selected.getGroßeltern(0)[1].name);
+				// Onkel Tanten väterlicherseits setzen
+				log.setText(log.getText() + "\nOnkel/Tanten väterlicherseits(Großmutter): ");
+				for (int y = 0; y < selected.getGroßeltern(0)[1].getKinder().size(); y++) {
+					if (selected.vater != selected.getGroßeltern(0)[1].getKinder().get(y)) {
+						log.setText(log.getText() + selected.getGroßeltern(0)[1].getKinder().get(y).name + ", ");
 					}
 				}
 
 				// Cousins väterlicherseits setzen
-				log.setText(log.getText() + "\nCousins väterlicherseits: ");
-				for (int i = 0; i < selected.vater.vater.getKinder().size(); i++) {
-					for (int x = 0; x < selected.vater.vater.getKinder().get(i).getKinder().size(); x++) {
-						if (selected.vater != selected.vater.vater.getKinder().get(i)) {
-							log.setText(log.getText() + selected.vater.vater.getKinder().get(i).getKinder().get(x).name
-									+ ", ");
-						}
-					}
-				}
-			} // Ende wenn er Großvater hat
-			if (selected.vater.mutter != null) {
-				log.setText("\nGroßmutter väterlicherseits: " + selected.vater.mutter.name);
-				// Onkel Tanten väterlicherseits setzen
-				log.setText(log.getText() + "\nOnkel/Tanten väterlicherseits(Großmutter): ");
-				for (int y = 0; y < selected.vater.mutter.getKinder().size(); y++) {
-					if (selected.vater != selected.vater.mutter.getKinder().get(y)) {
-						log.setText(log.getText() + selected.vater.mutter.getKinder().get(y).name + ", ");
-					}
-				}
-				// Cousins väterlicherseits setzen
 				log.setText(log.getText() + "\nCousins väterlicherseits(Großmutter): ");
-				for (int i = 0; i < selected.vater.mutter.getKinder().size(); i++) {
-					for (int x = 0; x < selected.vater.mutter.getKinder().get(i).getKinder().size(); x++) {
-						if (selected.vater != selected.vater.mutter.getKinder().get(i)) {
-							log.setText(log.getText() + selected.vater.mutter.getKinder().get(i).getKinder().get(x).name
-									+ ", ");
+				for (int i = 0; i < selected.getGroßeltern(0)[1].getKinder().size(); i++) {
+					if ((selected.getGroßeltern(0)[1].getKinder().get(i) != selected.vater)) {
+						for (int x = 0; x < selected.getGroßeltern(0)[1].getKinder().get(i).getKinder().size(); x++) {
+							if (selected.vater != selected.getGroßeltern(0)[1].getKinder().get(i)) {
+								log.setText(log.getText()
+										+ selected.getGroßeltern(0)[1].getKinder().get(i).getKinder().get(x).name
+										+ ", ");
+							}
 						}
 					}
 				}
 			}
 
 		} // Ende väterlicherseits
-		// Mütterlicherseits
+			// Mütterlicherseits
 		if (selected.mutter != null) { // Wenn er eine Mutter hat
+			log.setText(log.getText() + "\nMutter: " + selected.mutter.name);
 			// Geschwister setzen
-			for (int i = 0; i < selected.mutter.getKinder().size(); i++) {
-				log.setText(log.getText() + "\nGeschwister: ");
-				if (selected != selected.mutter.getKinder().get(i)) { 
-					log.setText(log.getText() + selected.mutter.getKinder().get(i).name + ", ");
+			if(!selected.getGeschwister().isEmpty()){
+			log.setText(log.getText() + "\nGeschwister: ");
+			for (int i = 0; i < selected.getGeschwister().size(); i++) {
+				if (selected != selected.getGeschwister().get(i)) {
+					log.setText(log.getText() + selected.getGeschwister().get(i).name + ", ");
 				}
 			}
-			if (selected.mutter.vater != null) { // Wenn er einen Großvater hat
-				log.setText(log.getText() + "\nGroßvater mütterlicherseits: " + selected.mutter.vater.name);
+			}
+			if (selected.getGroßeltern(1)[0] != null) { // Wenn er einen
+														// Großvater hat
+				log.setText(log.getText() + "\nGroßvater mütterlicherseits: " + selected.getGroßeltern(1)[0].name);
 				// Onkel Tanten mütterlicherseits setzen
-				log.setText("\nOnkel/Tanten mütterlicherseits(Großvater): ");
-				for (int x = 0; x < selected.mutter.vater.getKinder().size(); x++) {
-					if (selected.mutter != selected.mutter.vater.getKinder().get(x)) {
-						log.setText(log.getText() + selected.mutter.vater.getKinder().get(x).name + ", ");
+				log.setText(log.getText() + "\nOnkel/Tanten mütterlicherseits(Großvater): ");
+				for (int x = 0; x < selected.getGroßeltern(1)[0].getKinder().size(); x++) {
+					if (selected.mutter != selected.getGroßeltern(1)[0].getKinder().get(x)) {
+						log.setText(log.getText() + selected.getGroßeltern(1)[0].getKinder().get(x).name + ", ");
 					}
 				}
-			}
 			// Cousins mütterlicherseits setzen
 			log.setText(log.getText() + "\nCousins mütterlicherseits(Großmutter): ");
-			for (int i = 0; i < selected.mutter.vater.getKinder().size(); i++) {
-				for (int x = 0; x < selected.mutter.vater.getKinder().get(i).getKinder().size(); x++) {
-					if (selected.mutter != selected.mutter.vater.getKinder().get(i)) {
-						log.setText(log.getText() + selected.mutter.vater.getKinder().get(i).getKinder().get(x).name
-								+ ", ");
-					}
+			for (int i = 0; i < selected.getGroßeltern(1)[0].getKinder().size(); i++) {
+				if ((selected.getGroßeltern(1)[0].getKinder().get(i) != selected.mutter)) {
+					for (int x = 0; x < selected.getGroßeltern(1)[0].getKinder().get(i).getKinder().size(); x++) {
+						
+							log.setText(log.getText()
+									+ selected.getGroßeltern(1)[0].getKinder().get(i).getKinder().get(x).name + ", ");
+						}
+					
 				}
 			}
-			if (selected.mutter.mutter != null) {
-				log.setText("\nGroßmutter mütterlicherseits: " + selected.mutter.mutter.name);
+			}
+			
+			if (selected.getGroßeltern(1)[1] != null) {
+				log.setText(log.getText() + "\nGroßmutter mütterlicherseits: " + selected.getGroßeltern(1)[1].name);
 				// Onkel Tanten väterlicherseits setzen
 				log.setText(log.getText() + "\nOnkel/Tanten mütterlicherseits(Großmutter): ");
-				for (int y = 0; y < selected.mutter.mutter.getKinder().size(); y++) {
-					if (selected.mutter != selected.mutter.mutter.getKinder().get(y)) {
-						log.setText(log.getText() + selected.mutter.mutter.getKinder().get(y).name + ", ");
+				for (int y = 0; y < selected.getGroßeltern(1)[1].getKinder().size(); y++) {
+					if (selected.mutter != selected.getGroßeltern(1)[1].getKinder().get(y)) {
+						log.setText(log.getText() + selected.getGroßeltern(1)[1].getKinder().get(y).name + ", ");
 					}
 				}
 				// Cousins mütterlicherseits setzen
 				log.setText(log.getText() + "\nCousins mütterlicherseits(Großmutter): ");
-				for (int i = 0; i < selected.mutter.mutter.getKinder().size(); i++) {
-					for (int x = 0; x < selected.mutter.mutter.getKinder().get(i).getKinder().size(); x++) {
-						if (selected.mutter != selected.mutter.mutter.getKinder().get(i)) {
-							log.setText(log.getText() + selected.mutter.mutter.getKinder().get(i).getKinder().get(x).name
-									+ ", ");
-						}
+				for (int i = 0; i < selected.getGroßeltern(1)[1].getKinder().size(); i++) {
+					if ((selected.getGroßeltern(1)[1].getKinder().get(i) != selected.vater)) {
+						for (int x = 0; x < selected.getGroßeltern(1)[1].getKinder().get(i).getKinder().size(); x++) {
+							
+								log.setText(log.getText()
+										+ selected.getGroßeltern(1)[1].getKinder().get(i).getKinder().get(x).name
+										+ ", ");
+							}
+						
 					}
 				}
 			}
-		
+
 		} // Ende mütterlicherseits
-		
-		//Großeltern wenn vorhanden
-		if(selected.getEltern() != null){
-			log.setText(log.getText() + "\nGroßeltern: ");
-			log.setText(log.getText() + selected.getGroßeltern(0)[0] + ", " + selected.getGroßeltern(0)[1] + ", " + selected.getGroßeltern(1)[0] + ", " + selected.getGroßeltern(1)[1]);
+
+		// Kinder wenn vorhanden
+		if (!selected.getKinder().isEmpty()) {
+			log.setText(log.getText() + "\nKinder: ");
+			for (Mensch kind : selected.getKinder()) {
+				log.setText(log.getText() + kind.name + ", ");
+			}
+
+			// log.setText(log.getText() + selected.getGroßeltern(0)[0] + ", " +
+			// selected.getGroßeltern(0)[1] + ", " +
+			// selected.getGroßeltern(1)[0] + ", " +
+			// selected.getGroßeltern(1)[1]);
 		}
-		
-		//Enkel wenn vorhanden
-		if(selected.getEnkel().isEmpty() == false){
+
+		// Enkel wenn vorhanden
+		if (!selected.getEnkel().isEmpty()) {
 			log.setText(log.getText() + "\nEnkelkinder: ");
-			for(int i=0; i == (selected.getEnkel().size()-1); i++){
-				log.setText(log.getText() + selected.getEnkel().get(i) + ", ");
+			for (int i = 0; i < selected.getEnkel().size(); i++) {
+				log.setText(log.getText() + selected.getEnkel().get(i).name + ", ");
 			}
 		}
 	}

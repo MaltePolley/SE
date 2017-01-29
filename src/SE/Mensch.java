@@ -16,7 +16,7 @@ public class Mensch extends Label{
 	Mensch partner = null;										// Ehepartner
 	boolean m = false; 											// Männliche
 	boolean w = false;											// oder Weiblich
-	String name;												// Name
+	String name;												   // Name
 	double sizeX = 100;
 	double sizeY = 35;
 	boolean wertSwitch = true;
@@ -52,7 +52,7 @@ public class Mensch extends Label{
 	 */
 	public void addChildren(Mensch kind){
 		if(kinder != null){
-			for(int i=0; i==(kinder.size()-1);i++){
+			for(int i=0; i<kinder.size();i++){
 				kinder.get(i).geschwister.add(kind); // wenn kein EInzelkind, füge jedem Kind neues Kind als Geschwisterkind hinzu.
 				kind.geschwister.add(kinder.get(i)); // füge neuem Kind jedes vorhandene Kind als Geschwisterkind hinzu; 
 			}
@@ -65,7 +65,7 @@ public class Mensch extends Label{
 	}
 
 	/**
-	 * Fügt einem Knoten ein Elternteil hinzu
+	 * Fügt einem Knoten ein Elternteil hinzu wenn er keins hat
 	 * @param mensch
 	 */
 	public void addParent(Mensch mensch){
@@ -123,6 +123,7 @@ public class Mensch extends Label{
 		
 	}
 	
+	
 	/**
 	 * 
 	 * @return Liste der Kinder dieses Knoten
@@ -148,7 +149,8 @@ public class Mensch extends Label{
 		return this.getEltern()[i].getEltern(); 					//gibt Eltern der Eltern zurück 
 	}
 	
-	public ArrayList<Mensch> getEnkel(){
+	
+ 	public ArrayList<Mensch> getEnkel(){
 			 ArrayList<Mensch> enkel = new ArrayList<Mensch>();
 			 for (Mensch kind : this.kinder) {
 			  enkel.addAll(kind.kinder);
