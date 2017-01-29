@@ -135,12 +135,25 @@ public class Mensch extends Label{
 		return geschwister;
 	}
 	
+
 	public ArrayList<Mensch> getVerwandte(Mensch mensch, int i){	//wobei i = 0 Vater & i = 1 Mutter
 		return mensch.getEltern()[i].geschwister; 				//Gibt Geschwister der Eltern zurück (Onkel & Tannte)
 	}
 	
-	public Mensch[] getGroßeltern(Mensch mensch, int i){			//wobei i = 0 Vater & i = 1 Mutter
-		return mensch.getEltern()[i].getEltern(); 					//gibt Eltern der Eltern zurück 
+	public ArrayList<Mensch> getVerwandte(int i){	//wobei i = 0 Vater & i = 1 Mutter
+		return this.getEltern()[i].geschwister;  					//Gibt Geschwister der Eltern zurück (Onkel & Tannte)
+	}
+	
+	public Mensch[] getGroßeltern(int i){			//wobei i = 0 Vater & i = 1 Mutter
+		return this.getEltern()[i].getEltern(); 					//gibt Eltern der Eltern zurück 
+	}
+	
+	public ArrayList<Mensch> getEnkel(){
+			 ArrayList<Mensch> enkel = new ArrayList<Mensch>();
+			 for (Mensch kind : this.kinder) {
+			  enkel.addAll(kind.kinder);
+			 }
+			 return enkel; 
 	}
 	
 	/** Gibt die Coordinaten des Labels an der mittig untersten Stelle zurück
