@@ -95,18 +95,20 @@ public class MainTests {
                     		assertTrue(Lea == Klaus.geschwister.get(0)); //Lea und Klaus sind Geschwister 
                     		
                     		//Klaus ist Kevins und Chantals Onkel und Isabell ist Kevins und Chantals Tante
-                    		assertTrue(Klaus == Chantal.getVerwandte(Chantal, 1).get(0));
-                    		assertTrue(Isabell == Kevin.getVerwandte(Kevin, 0).get(0)); 
-                    		System.out.println("Tante von Kevin: " + Kevin.getVerwandte(Kevin, 0));
-                    		System.out.println("Tante von Chantal: " + Chantal.getVerwandte(Chantal, 0));
+                    		assertTrue(Klaus == Chantal.getVerwandte(1).get(0));
+                    		assertTrue(Isabell == Kevin.getVerwandte(0).get(0)); 
+                    		System.out.println("Tante von Kevin: " + Kevin.getVerwandte(0));
+                    		System.out.println("Tante von Chantal: " + Chantal.getVerwandte(0));
                     		
                     		//Die Großeltern von Peter und Harald sind Lea und Tom
-                    		//System.out.println("Papa von Peter: " + Peter.getEltern()[0]);
-                    		assertTrue(Tom == Peter.getGroßeltern(Peter, 0)[0]);
-                    		assertTrue(Lea == Peter.getGroßeltern(Peter, 0)[1]);
-                    		assertTrue(Tom == Harald.getGroßeltern(Harald, 0)[0]);
-                    		assertTrue(Lea == Harald.getGroßeltern(Harald, 0)[1]);
-                    		System.out.println("Großeltern von Peter & Harald: " + Peter.getGroßeltern(Peter, 0)[0] + " " + Peter.getGroßeltern(Peter, 0)[1]);
+                    		assertTrue(Tom == Peter.getGroßeltern(0)[0]);
+                    		assertTrue(Lea == Peter.getGroßeltern(0)[1]);
+                    		assertTrue(Tom == Harald.getGroßeltern(0)[0]);
+                    		assertTrue(Lea == Harald.getGroßeltern(0)[1]);
+                    		System.out.println("Großeltern von Peter & Harald: " + Peter.getGroßeltern(0)[0] + " " + Peter.getGroßeltern(0)[1]);
+                    		assertTrue(Harald == Lea.getEnkel().get(0));
+                    		assertTrue(Peter == Lea.getEnkel().get(1));
+                    		System.out.println("Leas Enkel sind: " + Lea.getEnkel().get(0) + " und " + Lea.getEnkel().get(1));
                     }
                 });
             }
