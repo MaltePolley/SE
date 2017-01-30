@@ -1,5 +1,3 @@
-package Pizza;
-
 public class Koch extends Mitarbeiter{
 	
 	public Koch(int id, Filialien filialie){

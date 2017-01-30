@@ -1,10 +1,8 @@
-package Pizza;
-
 import java.util.ArrayList;
 
 public class Filialien {
 	
-	// Vordefinierte Reihenfolge der Zutaten menge.get(0) = Zutat1 usw
+	// Vordefinierte Reihenfolge der Zutaten menge.get(0) = Zutat1 - bis menge.get(4) = Zutat5
 	ArrayList<Double> menge;
 	String standort;
 	int id;
