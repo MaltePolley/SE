@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.6487695749440716" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="896.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.6487695749440716" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="896.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Pizza.Bestellseite">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="505.0" prefWidth="515.0" style="-fx-background-color: orange;">
          <children>
@@ -89,6 +89,11 @@
                </font>
             </Button>
             <Button fx:id="hinzufügenK" alignment="CENTER" layoutX="243.0" layoutY="380.0" mnemonicParsing="false" onAction="#getKData" style="-fx-background-color: skyblue; -fx-background-radius: 50;" text="Hinzufügen">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="back" alignment="CENTER" layoutX="13.0" layoutY="625.0" mnemonicParsing="false" onAction="#getBack" style="-fx-background-color: skyblue; -fx-background-radius: 50;" text="Zurück">
                <font>
                   <Font name="Arial Bold Italic" size="20.0" />
                </font>
