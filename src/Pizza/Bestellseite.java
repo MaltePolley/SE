@@ -176,7 +176,7 @@ public class Bestellseite implements Initializable {
 	 * @throws IOException
 	 */
 	public void speichern() throws IOException{
-		BufferedWriter bw = new BufferedWriter(new FileWriter("Bestellungen.txt")); // eventuell true
+		BufferedWriter bw = new BufferedWriter(new FileWriter("Bestellungen.txt", true)); // eventuell true
 		if(!currentK.vorname.isEmpty() && !currentK.nachname.isEmpty() && !currentK.straße.isEmpty()  && !currentK.ort.isEmpty() && !currentK.handynummer.isEmpty()){	
 		bw.write(currentK.vorname + "," + currentK.nachname + "," + currentK.straße + "," + currentK.ort + "," + currentK.plz + "," + currentK.handynummer);
 		for (int i = 0; i < currentO.pizzen.size(); i++) {
