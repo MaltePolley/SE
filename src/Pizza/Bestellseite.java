@@ -1,8 +1,13 @@
 package Pizza;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -107,8 +112,14 @@ public class Bestellseite implements Initializable {
 
 	@FXML
 	protected void saveRData() {
-
-		//TODO In Datei speichern
+		try {
+			checkPfad("Bestellungen.txt");
+			speichern();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -146,4 +157,43 @@ public class Bestellseite implements Initializable {
 					}
 					// TODO Preis setzen
 	}
-}
+	
+	/** Überprüft ob eine Datei existiert.
+	 * @param String pfad - Zu überprüfende Datei
+	 */
+	public void checkPfad(String pfad){
+		File f = new File(pfad);
+		if(!f.exists()){
+			try{
+				Formatter format = new Formatter(pfad);
+			}catch(FileNotFoundException e){
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/** Speichert alle Karteikarten der Karteibox in die Datei zur Karteibox.
+	 * @throws IOException
+	 */
+	public void speichern() throws IOException{
+		BufferedWriter bw = new BufferedWriter(new FileWriter("Bestellungen.txt")); // eventuell true
+		if(!currentK.vorname.isEmpty() && !currentK.nachname.isEmpty() && !currentK.straße.isEmpty()  && !currentK.ort.isEmpty() && !currentK.handynummer.isEmpty()){	
+		bw.write(currentK.vorname + "," + currentK.nachname + "," + currentK.straße + "," + currentK.ort + "," + currentK.plz + "," + currentK.handynummer);
+		for (int i = 0; i < currentO.pizzen.size(); i++) {
+			bw.write("," + currentO.pizzen.get(i).pizzaArt.toString() + "," +  currentO.pizzen.get(i).pg.toString());
+			if (currentO.pizzen.get(i).toppings != null) {
+				for (int x = 0; x < currentO.pizzen.get(i).toppings.size(); x++) {
+					 bw.write("," + currentO.pizzen.get(i).toppings.get(x).toString());
+				}
+			}
+		}
+		bw.write("\n");
+		}else{
+			System.out.println("Einige Zeilen sind leer");
+		}
+		bw.close();
+	}
+	
+	
+	
+}// End Bestellseite
