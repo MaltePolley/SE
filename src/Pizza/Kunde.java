@@ -1,3 +1,6 @@
+package Pizza;
+
+
 import java.util.ArrayList;
 
 public class Kunde {
@@ -12,12 +15,13 @@ public class Kunde {
 	/**
 	 * Konstruktor
 	 */
-	public Kunde(String vorname, String nachname, String straße, String ort, String handynummer){
+	public Kunde(String vorname, String nachname, String straße, String ort, String handynummer, int plz){
 		this.vorname = vorname;
 		this.nachname = nachname;
 		this.straße = straße;
 		this.ort = ort;
 		this.handynummer = handynummer;
+		this.plz = plz;
 	}
 	
 	/**

@@ -1,3 +1,6 @@
+package Pizza;
+
+
 import java.util.ArrayList;
 
 public class Order {
@@ -18,9 +21,8 @@ public class Order {
 	/**
 	 * Konstruktor
 	 */
-	public Order(Filialien filialie, String datum){
-		this.filialie = filialie;
-		this.datum = datum;
+	public Order(){
+		
 	}
 	
 	/**

@@ -1,3 +1,5 @@
+package Pizza;
+
 import java.util.ArrayList;
 
 //TODO Irgendwo muss man das Rezept verändern, sodass man bei Large und X_large die Hälfte der Zutaten ändern kann.
@@ -16,11 +18,10 @@ public class Pizza {
 	/**
 	 * Konstruktor
 	 */
-	public Pizza(PizzaArt pa, PizzaGröße pg, ArrayList<Toppings> toppings, Rezept rezept){
+	public Pizza(PizzaArt pa, PizzaGröße pg, ArrayList<Toppings> toppings){
 		this.pizzaArt = pa;
 		this.pg = pg;
 		this.toppings = toppings;
-		this.rezept = rezept;
 		berechnePreis();
 	}
 

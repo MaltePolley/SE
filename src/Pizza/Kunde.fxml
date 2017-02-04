@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.6487695749440716" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="896.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="505.0" prefWidth="515.0" style="-fx-background-color: orange;">
+         <children>
+            <Label layoutX="176.0" layoutY="37.0" prefHeight="37.0" prefWidth="241.0" style="-fx-background-color: skyblue; -fx-background-radius: 50; -fx-alignment: center;" text="Bestellung  aufgeben">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="115.0" prefHeight="37.0" prefWidth="148.0" style="-fx-background-color: skyblue; -fx-background-radius: 50;" text="Kundendaten:">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="vorname" layoutX="322.0" layoutY="139.0" prefHeight="27.0" prefWidth="223.0" />
+            <TextField fx:id="nachname" layoutX="322.0" layoutY="177.0" prefHeight="27.0" prefWidth="223.0" />
+            <TextField fx:id="straße" layoutX="322.0" layoutY="214.0" prefHeight="27.0" prefWidth="223.0" />
+            <TextField fx:id="ort" layoutX="322.0" layoutY="250.0" prefHeight="27.0" prefWidth="223.0" />
+            <TextField fx:id="plz" layoutX="322.0" layoutY="286.0" prefHeight="27.0" prefWidth="223.0" />
+            <Label layoutX="211.0" layoutY="139.0" text="Vorname:">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="193.0" layoutY="178.0" text="Nachname:">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="229.0" layoutY="215.0" text="Straße:">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="260.0" layoutY="251.0" text="Ort:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="256.0" layoutY="287.0" text="PLZ:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="handynr" layoutX="322.0" layoutY="322.0" prefHeight="27.0" prefWidth="223.0" />
+            <Label layoutX="156.0" layoutY="323.0" text="Handynummer:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="433.0" prefHeight="37.0" prefWidth="120.0" style="-fx-background-color: skyblue; -fx-background-radius: 50;" text="Bestellung:">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="toppings" layoutX="326.0" layoutY="567.0" prefWidth="150.0" />
+            <ComboBox fx:id="pizza" layoutX="326.0" layoutY="494.0" prefWidth="150.0" />
+            <Label layoutX="218.0" layoutY="494.0" text="Pizza:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="214.0" layoutY="532.0" text="Größe:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="pizzaGr" layoutX="326.0" layoutY="532.0" prefWidth="150.0" />
+            <Label layoutX="192.0" layoutY="567.0" text="Toppings:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="hinzufügenB" alignment="CENTER" layoutX="243.0" layoutY="625.0" mnemonicParsing="false" onAction="#getBData" style="-fx-background-color: skyblue; -fx-background-radius: 50;" text="Hinzufügen">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="hinzufügenK" alignment="CENTER" layoutX="243.0" layoutY="380.0" mnemonicParsing="false" onAction="#getKData" style="-fx-background-color: skyblue; -fx-background-radius: 50;" text="Hinzufügen">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="723.0" prefWidth="314.0" style="-fx-background-color: red;">
+         <children>
+            <Label layoutX="35.0" layoutY="35.0" prefHeight="37.0" prefWidth="241.0" style="-fx-background-color: skyblue; -fx-background-radius: 50; -fx-alignment: center;" text="Rechnung">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="hinzufügenR" alignment="CENTER" layoutX="90.0" layoutY="617.0" mnemonicParsing="false" onAction="#saveRData" style="-fx-background-color: skyblue; -fx-background-radius: 50;" text="Bestätigen">
+               <font>
+                  <Font name="Arial Bold Italic" size="20.0" />
+               </font>
+            </Button>
+            <ScrollPane layoutX="44.0" layoutY="102.0" prefHeight="500.0" prefWidth="212.0">
+               <content>
+                  <Label fx:id="text" alignment="TOP_LEFT" prefHeight="499.0" prefWidth="209.0" text="Label" wrapText="true" />
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>
