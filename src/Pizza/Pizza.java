@@ -90,7 +90,7 @@ public class Pizza {
 			this.preis = this.preis + (0.5*anzahlToppings); 
 			//Für jedes Topping wird ein Aufpreis berechnet von 0,50€. 
 		}
-		
+		endPreis = preis; 
 	}
 
 	public void setAufPreis(double preis) {
