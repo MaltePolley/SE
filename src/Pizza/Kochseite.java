@@ -65,6 +65,7 @@ public class Kochseite implements Initializable {
 			e.printStackTrace();
 		}
 		int selected = orders.getSelectionModel().getSelectedIndex();
+		if(selected>=0){
 		Order currentO = orderino.get(selected);
 		Kunde currentK = orderino.get(selected).kunde;
 		// Display
@@ -91,18 +92,21 @@ public class Kochseite implements Initializable {
 
 			}
 			// Status setzen
-			
+		}
 	}
 	
 
 	@FXML
 	protected void setStatus() {
 		int selected = orders.getSelectionModel().getSelectedIndex();
+		if(selected>=0){
 		Order currentO = orderino.get(selected);
 		Kunde currentK = orderino.get(selected).kunde;
 		Status state =  convertState(status.getSelectionModel().getSelectedItem().toString());
 		currentO.status = state;
-		
+		}else{
+			System.out.println("No Status Selected");
+		}
 	}
 
 	@Override
