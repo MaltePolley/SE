@@ -91,6 +91,9 @@ public class Kochseite implements Initializable {
 				}
 
 			}
+			if(currentO.status!=null){
+				text.setText(text.getText() + "\n" + currentO.status.toString());
+			}
 			// Status setzen
 		}
 	}
